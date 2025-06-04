@@ -1,1 +1,1 @@
-- Bert + Selenium
+- BERT 기반 해외 직구 플랫폼 사기 탐지 시스템

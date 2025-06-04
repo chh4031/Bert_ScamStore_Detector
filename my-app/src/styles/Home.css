@@ -1,0 +1,248 @@
+/* ✅ 전역 리셋 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.home {
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 20px 80px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* 로고 스타일 추가 */
+.logo {
+  color: #FF6B00;
+  font-size: 25px;
+}
+
+.logo a{
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+}
+
+/* 경계선 css 추가 */
+.nav span{
+  color: #958F8B;
+  font-weight: bold;
+}
+
+/* Auth buttons */
+.auth-buttons button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-btn {
+  border: 1px solid #FF6B00;
+  background-color: white;
+  color: #FF6B00;
+}
+
+.signup-btn {
+  border: none;
+  background-color: #FF6B00;
+  color: white;
+}
+
+/* Hero section */
+.hero {
+  /* background-color: #FF6B00; */
+  color: white;
+  text-align: center;
+  padding: 140px 20px;
+  text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+  height: 500px;
+  width: 100%;
+}
+
+/* 세부 스타일 추가 */
+ .hero h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    .hero input[type="text"] {
+      padding: 10px 10px;
+      width: 300px;
+      border: none;
+      border-radius: 4px;
+      margin-right: 15px;
+      height: 43px;
+    }
+    .hero button {
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      height: 43px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      margin-top: 1px;
+    }
+
+    /* 색상 추가 */
+    .hero strong{
+      color: #FBE922;
+    }
+
+.input-area {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+
+/* Feature section */
+.feature-section {
+  background-color: #FFF6ED;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.feature-section h2 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #474747;
+}
+
+.feature-section p {
+  max-width: 800px;
+  margin: 5px auto 5px auto;
+  line-height: 1.8;
+  color: #7A7A7A;
+}
+
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding-bottom: 60px;
+}
+
+.feature-card {
+  background-color: white;
+  padding: 20px;
+  width: 280px;
+  border-radius: 0px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 사진 추가 */
+.feature-card img{
+  width: 150px;
+}
+
+/* 텍스트 색상 */
+.feature-card h3{
+  color: #474747;
+}
+
+.feature-card p{
+  color: #7A7A7A;
+}
+
+.size {
+  width: 150px;
+  margin: 0 auto;
+}
+
+/* Footer */
+.footer {
+  background-color: #222;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 0.9rem;
+}
+
+/* 화면 달라지는 부분 */
+.result-section {
+  background-color: #FFF6ED;
+  padding: 80px 20px;
+  justify-content: center;
+}
+
+.result-section h3 {
+  text-align: center;
+}
+
+.analysis-section {
+  display: flex;
+  justify-content: center;
+}
+
+.result-section h3 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #474747;
+}
+
+.result-section p {
+  max-width: 800px;
+  margin: 5px auto 5px auto;
+  line-height: 1.8;
+  color: #7A7A7A;
+}
+
+.analysis-box_left {
+  background-color: white;
+  padding: 20px;
+  width: 800px;
+  border-radius: 0px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-right: 20px;
+}
+
+.analysis-box_right {
+  background-color: white;
+  padding: 20px;
+  width: 280px;
+  border-radius: 0px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.analysis-box_right ul span{
+  display: block;
+  margin-top: 10px;
+}
+
+.footxt{
+  text-align: center;
+  color: #7A7A7A;
+}
+.ptxt {
+  font-size: 13px;
+}

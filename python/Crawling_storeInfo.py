@@ -1,115 +1,133 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.action_chains import ActionChains
-from webdriver_manager.chrome import ChromeDriverManager
+import undetected_chromedriver as uc
 import time
-
-from selenium.webdriver.chrome.options import Options
-import chromedriver_autoinstaller
-import subprocess
-
-# Selenium 설정
-options = Options()
-
-# 크롬 디버깅 모드 실행 => 우회 피하기, 디버그 모드 실행임. 창이 2개 안뜨는지만 확인할것;; 신규설정
-subprocess.Popen(r'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\\chrometemp"')
-
-# Selenium 설정
-options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
-
-# ChromeDriver 자동 설치 및 Service 객체 사용
-chromedriver_autoinstaller.install()
-chrome_ver = chromedriver_autoinstaller.get_chrome_version().split('.')[0]
-service = Service(f'./{chrome_ver}/chromedriver.exe')
-
-try:
-    driver = webdriver.Chrome(service=service, options=options)
-except Exception as e:
-    print(f"오류 발생: {e}")
-    chromedriver_autoinstaller.install(True)
-    driver = webdriver.Chrome(service=service, options=options)
-
-driver.implicitly_wait(10)
-
-# 웹 드라이버 설정 => 일단 설정해줘야함(만약 gpu 하드웨어 가속 오류 등등 나오면)
-options.add_argument("--disable-gpu")  # GPU 하드웨어 가속 비활성화
-options.add_argument("--no-sandbox")  # 샌드박스 비활성화
-
-# 이 부분은 자동화 봇을 회피하는 부분(크롤링 시 문제는 로봇이 아닙니다와 같이 봇 감지를 하는 경우가 빈번함 => 다수 사용자 접속시 문제 발생)
-options.add_argument("disable-blink-features=AutomationControlled")
-options.add_experimental_option("excludeSwitches", ["enable-automation"])
-options.add_experimental_option('useAutomationExtension', False)
-options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
-
-# 웹 드라이버 설정 => 기본설정
-# driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-
-# 웹 페이지 열기 => 크롤링 할 웹 페이지 지정(나중에 사용자가 넣는 페이지로 써야될듯)
-# url = "https://ko.aliexpress.com/item/1005005802879951.html?spm=a2g0o.home.pcJustForYou.3.5e3d70f4Pm7Y3E&gps-id=pcJustForYou&scm=1007.40170.414127.0&scm_id=1007.40170.414127.0&scm-url=1007.40170.414127.0&pvid=2e423c2f-f2c2-48c2-9e49-7f12a34afb7d&_t=gps-id:pcJustForYou,scm-url:1007.40170.414127.0,pvid:2e423c2f-f2c2-48c2-9e49-7f12a34afb7d,tpp_buckets:668%232846%238109%231935&pdp_ext_f=%7B%22order%22%3A%226512%22%2C%22eval%22%3A%221%22%2C%22sceneId%22%3A%223562%22%7D&pdp_npi=4%40dis%21USD%2130.49%2129.54%21%21%21221.71%21214.86%21%40213ba8cc17448670122558415ee4c9%2112000034404370616%21rec%21KR%212809048098%21X&utparam-url=scene%3ApcJustForYou%7Cquery_from%3A"
-url = "https://ko.aliexpress.com/item/1005008800341326.html?spm=a2g0o.home.pcJustForYou.16.7b4970f4V4iO1i&gps-id=pcJustForYou&scm=1007.40170.414127.0&scm_id=1007.40170.414127.0&scm-url=1007.40170.414127.0&pvid=11a61cab-708e-4052-b3fd-999c6eb54e37&_t=gps-id:pcJustForYou,scm-url:1007.40170.414127.0,pvid:11a61cab-708e-4052-b3fd-999c6eb54e37,tpp_buckets:668%232846%238109%231935&pdp_ext_f=%7B%22order%22%3A%2216%22%2C%22eval%22%3A%221%22%2C%22sceneId%22%3A%223562%22%7D&pdp_npi=4%40dis%21USD%21109.41%21109.41%21%21%21795.69%21795.69%21%40212e520f17448645649592988e1a0c%2112000046713835158%21rec%21KR%212809048098%21XZ&utparam-url=scene%3ApcJustForYou%7Cquery_from%3A"
-# url = "https://ko.aliexpress.com/item/1005007174616177.html?spm=a2g0o.productlist.main.12.6b582d5dIAbmo2&algo_pvid=29930ae0-80c1-4a45-9dfe-abc9df0c5cba&algo_exp_id=29930ae0-80c1-4a45-9dfe-abc9df0c5cba-11&pdp_ext_f=%7B%22order%22%3A%2272%22%2C%22eval%22%3A%221%22%7D&pdp_npi=4%40dis%21USD%21346.50%21346.50%21%21%21495000%21495000%21%40212e508d17448648459564380efb6a%2112000042792225092%21sea%21KR%212809048098%21X&curPageLogUid=8sARV6jYT1or&utparam-url=scene%3Asearch%7Cquery_from%3A"
-driver.get(url)
-
-time.sleep(1)
-
-# 마우스 커서 먼저 올려두는 부분이 필요함(커서가 올라가야 작동함 ㅇㅇ)
-# 마우스를 올릴 요소 찾기
-try:
-    hover_element = driver.find_element(By.CLASS_NAME, 'store-detail--wrap--IhR4e1j')
-
-# 마우스 커서를 요소 위로 이동
-    actions_hover = ActionChains(driver)
-    actions_hover.move_to_element(hover_element).perform()
-except Exception as e:
-    print(f"마우스 이동 실패 {e}")
-
-time.sleep(2)
-
-try:
-    # 상품 이름 가져오는거 이거 중요한게 "2025", "새로운" 키워드가 있으면 사기 확률이 높아진다고 함.
-    Product_name = driver.find_element(By.CLASS_NAME, "title--wrap--UUHae_g")
-    Product_name_h1 = Product_name.find_element(By.TAG_NAME, 'h1')
-    Product_name_data = Product_name_h1.text
-    print(f"상품명 가져오기 : {Product_name_data}")
-
-    Store_open = driver.find_element(By.XPATH, '//td[contains(text(), "영업개시일")]/following-sibling::td')
-    Store_open_data = Store_open.text
-    print(f"영업개시일 가져오기 : {Store_open_data}")
-
-    Store_name = driver.find_element(By.XPATH, '//td[contains(text(), "스토어명")]/following-sibling::td')
-    Store_name_data = Store_name.text
-    print(f"스토어명 가져오기 : {Store_name_data}")
-
-    Store_locate = driver.find_element(By.XPATH, '//td[contains(text(), "영업소재지")]/following-sibling::td')
-    Store_locate_data = Store_locate.text
-    print(f"영업소재지 가져오기 : {Store_locate_data}")
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from datetime import datetime
 
 
-    driver.execute_script("document.elementFromPoint(0, 0).click();")
-    time.sleep(2)
+class SafeChrome(uc.Chrome):
+    def __del__(self):
+        pass  # 자동 소멸 시 quit() 호출 방지
 
-    click_element = driver.find_element(By.CLASS_NAME, 'shipping--content--ulA3urO')
-    actions_click = ActionChains(driver)
-    actions_click.click(click_element).perform()
+def ShoreInfo(URL):
+    driver = None
 
-    time.sleep(2)
+    Product_name_data = ""
+    Store_open_data = ""
+    Store_name_data = ""
+    Store_delivery_data = ""
+    Store_locate_data = ""
 
     try:
-        Store_delivery = driver.find_element(By.CLASS_NAME, 'dynamic-shipping')
-        Store_delivery_child = Store_delivery.find_element(By.CSS_SELECTOR,'span:nth-child(4) span')
-        Store_delivery_data = Store_delivery_child.text
-    except:
-        Store_delivery_data = "출발지 China"
-        pass
-    print(f"배송정보 가져오기 : {Store_delivery_data}")
+        start_time = time.time()
 
-except Exception as e:
-    print(f"데이터 가져오기 실패 : {e}")
+        start_time = time.time()
+        
+        options = uc.ChromeOptions()
+
+        # 웹 드라이버 설정 => 일단 설정해줘야함(만약 gpu 하드웨어 가속 오류 등등 나오면)
+        options.add_argument("--disable-gpu")  # GPU 하드웨어 가속 비활성화
+        options.add_argument("--no-sandbox")  # 샌드박스 비활성화
+        options.add_argument("--disable-dev-shm-usage")
+
+        # 이 부분은 자동화 봇을 회피하는 부분(크롤링 시 문제는 로봇이 아닙니다와 같이 봇 감지를 하는 경우가 빈번함 => 다수 사용자 접속시 문제 발생)
+        options.add_argument("disable-blink-features=AutomationControlled")
+        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
+
+        # 웹 페이지 열기 => 크롤링 할 웹 페이지 지정(나중에 사용자가 넣는 페이지로 써야될듯)
+        
+        driver = SafeChrome(options=options)
+        driver.implicitly_wait(10)
+
+        url = URL
+        driver.get(url)
+
+        time.sleep(4)
+        driver.refresh()
+        time.sleep(4)
+
+        # 마우스 커서 먼저 올려두는 부분이 필요함(커서가 올라가야 작동함 ㅇㅇ)
+        # 마우스를 올릴 요소 찾기
+        try:
+            time.sleep(1)
+            hover_element = driver.find_element(By.CLASS_NAME, 'store-detail--wrap--IhR4e1j')
+            time.sleep(1)
+        # 마우스 커서를 요소 위로 이동
+            actions_hover = ActionChains(driver)
+            time.sleep(1)
+            actions_hover.move_to_element(hover_element).perform()
+            time.sleep(1)
+        except Exception as e:
+            print(f"마우스 이동 실패 {e}")
+
+        time.sleep(1)
+
+        try:
+            # 상품 이름 가져오는거 이거 중요한게 "2025", "새로운" 키워드가 있으면 사기 확률이 높아진다고 함.
+            Product_name = driver.find_element(By.CLASS_NAME, "title--wrap--UUHae_g")
+            Product_name_h1 = Product_name.find_element(By.TAG_NAME, 'h1')
+            Product_name_data = Product_name_h1.text
+            print(f"상품명 가져오기 : {Product_name_data}")
+
+            Store_open = driver.find_element(By.XPATH, '//td[contains(text(), "영업개시일")]/following-sibling::td')
+            Store_open_data = Store_open.text
+            print(f"영업개시일 가져오기 : {Store_open_data}")
+
+            Store_name = driver.find_element(By.XPATH, '//td[contains(text(), "스토어명")]/following-sibling::td')
+            Store_name_data = Store_name.text
+            print(f"스토어명 가져오기 : {Store_name_data}")
+
+            Store_locate = driver.find_element(By.XPATH, '//td[contains(text(), "영업소재지")]/following-sibling::td')
+            Store_locate_data = Store_locate.text
+            print(f"영업소재지 가져오기 : {Store_locate_data}")
 
 
-# 웹 드라이버 종료
-driver.quit()
+            driver.execute_script("document.elementFromPoint(0, 0).click();")
+            time.sleep(2)
 
-# 현재 진행중인 크롤링 코드
+            click_element = driver.find_element(By.CLASS_NAME, 'shipping--content--ulA3urO')
+            actions_click = ActionChains(driver)
+            actions_click.click(click_element).perform()
+
+            time.sleep(2)
+
+            try:
+                Store_delivery = driver.find_element(By.CLASS_NAME, 'dynamic-shipping')
+                Store_delivery_child = Store_delivery.find_element(By.CSS_SELECTOR,'span:nth-child(4) span')
+                Store_delivery_data = Store_delivery_child.text
+            except:
+                Store_delivery_data = "출발지 China"
+                pass
+            print(f"배송정보 가져오기 : {Store_delivery_data}")
+
+        except Exception as e:
+            print(f"데이터 가져오기 실패 : {e}")
+
+    finally:
+        # 웹 드라이버 종료
+        if driver:
+            driver.quit()
+
+    parsed_date = datetime.strptime(Store_open_data, "%m월 %d, %Y")
+    formatted_date = parsed_date.strftime("%Y-%m-%d")
+
+    storeTotal = {
+        'ProductName' : Product_name_data,
+        'StoreOpen' : formatted_date,
+        'StoreName' : Store_name_data,
+        'StoreDeli' : Store_delivery_data,
+        'StoreCountry' : Store_locate_data
+    }
+
+    # 현재 진행중인 크롤링 코드
+
+    end_time = time.time()
+    check_time = end_time - start_time
+    print(f"실행시간 : {check_time: .2f} 초")
+
+    return  storeTotal
+
+# 테스트 코드
+# ShoreInfo()

@@ -27,7 +27,7 @@ def Review_Crawing(URL):
 
         # 이 부분은 자동화 봇을 회피하는 부분(크롤링 시 문제는 로봇이 아닙니다와 같이 봇 감지를 하는 경우가 빈번함 => 다수 사용자 접속시 문제 발생)
         options.add_argument("disable-blink-features=AutomationControlled")
-        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
+        options.add_argument("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.7151.68 Safari/537.36")
 
         # 웹 페이지 열기 => 크롤링 할 웹 페이지 지정(나중에 사용자가 넣는 페이지로 써야될듯)
         
@@ -48,7 +48,7 @@ def Review_Crawing(URL):
         # 더보기 버튼 클릭으로 리뷰 데이터 가져오기(이거는 한번만 누를수 있게 구성)
         try:
             # Xpath로 확실하게 선택하기 => 이거 상품 페이지마다 태그명이 좀 다름
-            more_button = driver.find_element(By.XPATH, '//div[contains(text(), "지역 검토")]')
+            more_button = driver.find_element(By.XPATH, '//button[.//span[text()="더 보기"]]')
             # print(more_button)
             driver.execute_script("arguments[0].click();", more_button)
             time.sleep(3)  # 페이지가 로드 시간(이거 안주면 페이지 로드 안되는 경우 생김)
